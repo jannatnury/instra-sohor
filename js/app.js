@@ -33,24 +33,28 @@ const displayContent = (text) => {
   // bug no 02
   return text.length < 30 ? text : text.slice(0, 30) + "<span class='fw-bold'>... read more</span>";
 };
-
 const switchTab = (id) => {
+  if (id === "posts") {
+    document.getElementById("questions").style.display = "block";
+    document.getElementById("posts").style.display = "grid";
+    document.getElementById("liked").style.display = "none";
+    document.getElementById("reported").style.display = "none";
+  } else if (id === "liked") {
+    document.getElementById("questions").style.display = "none";
+    document.getElementById("liked").style.display = "block";
+    document.getElementById("posts").style.display = "none";
+    document.getElementById("reported").style.display = "none";
 
-  document.getElementById("posts").style.display = "grid";
-  document.getElementById("liked").style.display = "none";
-  document.getElementById("reported").style.display = "none";
-  document.getElementById("liked").style.display = "block";
-  document.getElementById("posts").style.display = "none";
-  document.getElementById("reported").style.display = "none";
-  // bug no 03
-  if (id === "liked") {
     displayLikedPosts();
-  } else if (id === "reported") {
-    displayLikedPosts();
+  } else {
+    document.getElementById("questions").style.display = "none";
+    document.getElementById("reported").style.display = "block";
+    document.getElementById("posts").style.display = "none";
+    document.getElementById("liked").style.display = "none";
+
+    displayReportedPosts();
   }
-  displayReportedPosts();
 };
-
 const createPost = (post) => {
   //  bug no 04 
   const { userImage, image, comments } = post;
