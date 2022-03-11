@@ -35,25 +35,25 @@ const displayContent = (text) => {
 };
 
 const switchTab = (id) => {
-  
-    document.getElementById("posts").style.display = "grid";
-    document.getElementById("liked").style.display = "none";
-    document.getElementById("reported").style.display = "none";
-    document.getElementById("liked").style.display = "block";
-    document.getElementById("posts").style.display = "none";
-    document.getElementById("reported").style.display = "none";
-    // bug no 03
-    if (id === "liked") {
-      displayLikedPosts();
-    } else if (id === "reported"){
+
+  document.getElementById("posts").style.display = "grid";
+  document.getElementById("liked").style.display = "none";
+  document.getElementById("reported").style.display = "none";
+  document.getElementById("liked").style.display = "block";
+  document.getElementById("posts").style.display = "none";
+  document.getElementById("reported").style.display = "none";
+  // bug no 03
+  if (id === "liked") {
     displayLikedPosts();
-  } 
-    displayReportedPosts();
+  } else if (id === "reported") {
+    displayLikedPosts();
+  }
+  displayReportedPosts();
 };
 
 const createPost = (post) => {
-//  bug no 04 
-  const {userImage,image,comments} = post;
+  //  bug no 04 
+  const { userImage, image, comments } = post;
   const div = document.createElement("article");
   div.classList.add("post");
   div.innerHTML = `
@@ -97,8 +97,7 @@ const createPost = (post) => {
 
                   <div class="post__indicators"></div>
 
-                  <button class="post__button post__button--align-right" onclick="reportPost(${post.id
-    })">
+                  <button class="post__button post__button--align-right" onclick="reportPost(${post.id})">
                     <i class="fa-solid fa-ban"></i>
                   </button>
                 </div>
@@ -121,9 +120,9 @@ const createPost = (post) => {
                   <div class="post__description">
                     <small>
                       <a class="post__name--underline" href="#">
-                          ${post.comments?.user}
+                          ${comments[0]?.user}
                       </a>
-                      ${post.comments?.text}
+                      ${comments[0]?.text}
                     </small>
                   </div>
                   <span class="post__date-time">30 minutes ago</span>
@@ -135,7 +134,7 @@ const createPost = (post) => {
 
 const showPosts = (posts) => {
   const productsContainer = document.getElementById("posts");
-  productsContainer.innerHTML = "";
+  productsContainer.innerHTML = '';
 
   posts.forEach((post) => {
     const div = createPost(post);
@@ -144,6 +143,7 @@ const showPosts = (posts) => {
 };
 
 const displayLikedPosts = () => {
+  document.getElementById("liked").innerHTML = '';
   const likedPosts = getLikedPosts();
   likedPosts.forEach((post) => {
     const div = createPost(post);
@@ -152,8 +152,9 @@ const displayLikedPosts = () => {
 };
 
 const displayReportedPosts = () => {
+  document.getElementById("reported").innerHTML = '';
   const reportedPosts = getReportedPosts();
-  posts.forEach((post) => {
+  reportedPosts.forEach((post) => {
     const div = createPost(post);
     document.getElementById("reported").appendChild(div);
   });
@@ -163,6 +164,7 @@ const loadPosts = async () => {
   let data = await fetch('../data/posts.json');
   posts = await data.json();
   showPosts(posts);
-}
+};
 
 loadPosts();
+// END
